@@ -188,17 +188,17 @@ class MemberEntryForm extends javax.swing.JFrame {
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
         
-        int id = 0;
+        String id = "";
         String name = "";
         
         try {
             
-            id = Integer.parseInt(JOptionPane.showInputDialog("Enter ID"));
+            id = JOptionPane.showInputDialog("Enter ID");
             name = JOptionPane.showInputDialog("Enter Name");
             
             String sql = "INSERT INTO member_info("
                     + "id,name) VALUES ("
-                    + id + ", "
+                    + "\"" + id + "\", "
                     + "\"" + name + "\")";
             if ("".equals(name.trim()) && "".equals(String.valueOf(id))) {
                 
