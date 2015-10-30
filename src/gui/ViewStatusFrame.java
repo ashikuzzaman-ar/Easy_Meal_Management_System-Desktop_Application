@@ -259,8 +259,8 @@ class ViewStatusFrame extends javax.swing.JFrame {
                 this.tfTotalSpend.setText(resultSet.getString("total_cost"));
             }
 
-            int currentDeposit = Integer.valueOf(this.tfTotalDeposit.getText())
-                    - Integer.valueOf(this.tfTotalSpend.getText());
+            double currentDeposit = Double.valueOf(this.tfTotalDeposit.getText())
+                    - Double.valueOf(this.tfTotalSpend.getText());
             tfCurrentDeposit.setText(String.valueOf(
                     currentDeposit
             ));
@@ -279,8 +279,8 @@ class ViewStatusFrame extends javax.swing.JFrame {
                 this.tfTotalMeal.setText(resultSet.getString("total_meal"));
             }
 
-            double mealRate = Integer.valueOf(this.tfTotalSpend.getText())
-                    / Integer.valueOf(this.tfTotalMeal.getText());
+            double mealRate = Double.valueOf(this.tfTotalSpend.getText())
+                    / Double.valueOf(this.tfTotalMeal.getText());
 
             this.tfMealRate.setText(String.valueOf(mealRate));
 
