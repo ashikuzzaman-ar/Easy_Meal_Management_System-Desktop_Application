@@ -24,8 +24,6 @@ public class ConnectToDatabase {
             ConnectToDatabase.connection = DriverManager.getConnection(
                     "jdbc:sqlite:"+file.getAbsolutePath()+"/.EMMS-RES/datas.sqlite");
             ConnectToDatabase.statement = ConnectToDatabase.connection.createStatement();
-            ConnectToDatabase.statement.execute("CREATE  TABLE  IF NOT EXISTS user_info ("
-                    + "user_name VARCHAR PRIMARY KEY  NOT NULL , password VARCHAR NOT NULL )");
         } catch (ClassNotFoundException | SQLException e) {
             
             System.err.println(e);

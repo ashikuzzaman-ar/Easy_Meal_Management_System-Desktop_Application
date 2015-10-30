@@ -26,6 +26,7 @@ public class ResourceTester {
             if(!this.file.exists()){
                 
                 this.file.mkdirs();
+                
             }  
         } catch (HeadlessException e) {
             
