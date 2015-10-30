@@ -1,42 +1,25 @@
 package gui;
 
 import java.awt.Color;
-import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
+import src.ConnectToDatabase;
 
 class ViewStatusFrame extends javax.swing.JFrame {
 
-    
-    private double totalDeposit;
-    private double totalSpend;
-    private double currentDeposit;
-    private double totalMeal;
-    private double mealRate;
-    private double averageShoppingPerDay;
-    private int dayCount;
-    private final int memberCount = MemberEntryForm.rowNumber();
-    
-    private File file = new File("");
-    private Scanner scan;
-    
-    
-    
+
     public ViewStatusFrame() {
         initComponents();
-        
-        
-        
-        
+
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        lDate.setText("Date: "+date.format(new Date()));
+        lDate.setText("Date: " + date.format(new Date()));
         showResult();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -46,7 +29,7 @@ class ViewStatusFrame extends javax.swing.JFrame {
         lTotaleDeposit = new javax.swing.JLabel();
         tfTotalDeposit = new javax.swing.JTextField();
         lTotalSpend = new javax.swing.JLabel();
-        tfTtalSpend = new javax.swing.JTextField();
+        tfTotalSpend = new javax.swing.JTextField();
         lCurrentDeposit = new javax.swing.JLabel();
         tfCurrentDeposit = new javax.swing.JTextField();
         lTotalMeal = new javax.swing.JLabel();
@@ -81,7 +64,7 @@ class ViewStatusFrame extends javax.swing.JFrame {
         lTotalSpend.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         lTotalSpend.setText("Total Spend: ");
 
-        tfTtalSpend.setEditable(false);
+        tfTotalSpend.setEditable(false);
 
         lCurrentDeposit.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         lCurrentDeposit.setText("Current Deposit: ");
@@ -156,7 +139,7 @@ class ViewStatusFrame extends javax.swing.JFrame {
                                 .addGroup(pViewStatusFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(tfTotalMeal, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSeparator3)
-                                    .addComponent(tfTtalSpend, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(tfTotalSpend, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jSeparator2)
                                     .addComponent(jSeparator4)
                                     .addComponent(jSeparator5)
@@ -189,7 +172,7 @@ class ViewStatusFrame extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(pViewStatusFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lTotalSpend)
-                    .addComponent(tfTtalSpend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfTotalSpend, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -244,7 +227,7 @@ class ViewStatusFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bOkActionPerformed
-        
+
         dispose();
     }//GEN-LAST:event_bOkActionPerformed
 
@@ -254,163 +237,70 @@ class ViewStatusFrame extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_bViewFullModeActionPerformed
 
-    
-    
-    
-    private void showResult(){
-        
-        
-        tfTotalDeposit.setText(String.valueOf(getTotaleDeposit()));
-        tfTtalSpend.setText(String.valueOf(getTotaleSpend()));
-        tfCurrentDeposit.setText(String.valueOf(getCurrentDeposit()));
-        tfTotalMeal.setText(String.valueOf(getTotalMeal()));
-        tfMealRate.setText(String.valueOf(getMealRate()));
-        tfAverageShoppingPerDay.setText(String.valueOf(getAverageShoppingPerDay()));
-    }
-    
-    
-    
-    
-    
-    private double getAverageShoppingPerDay(){
-        
-        averageShoppingPerDay = 0;
-        
-        if(dayCount!=0){
-            
-            averageShoppingPerDay = totalSpend/dayCount;
-        }
-        
-        return averageShoppingPerDay;
-    }
-    
-    
-    
-    
-    
-    double getMealRate(){
-        
-        mealRate = 0;
-        
-        if(totalMeal!=0){
-            
-            mealRate = totalSpend/totalMeal;
-        }
-        
-        return mealRate;
-    }
-    
-    
-    
-    
-    
-    
-    private double getTotalMeal(){
-        
-        totalMeal = 0;
-        dayCount = 0;
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/meal-status.txt"));
-            while(scan.hasNext()){
-                scan.next();
-                for(int i=0; i<memberCount; i++){
-                    totalMeal+=(Double.valueOf(scan.next()));
-                }
-                dayCount++;
-            }
-            scan.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-        
-        
-        return totalMeal;
-    }
-    
-    
-    
-    
-    
-    
-    
-    private double getCurrentDeposit(){
-        
-        currentDeposit = 0;
-        
-        currentDeposit = totalDeposit - totalSpend;
-        
-        return currentDeposit;
-    }
-    
-    
-    
-    
-    
-    private double getTotaleSpend(){
-        
-        totalSpend = 0;
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/shopping-status.txt"));
-            while(scan.hasNext()){
-                scan.nextLine();
-                totalSpend+=(Double.valueOf(scan.nextLine()));
-            }
-            scan.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        } finally {
-            
-            if(currentDeposit<0){
-            
-                tfTtalSpend.setBackground(Color.yellow);
-                tfCurrentDeposit.setBackground(Color.yellow);
+    private void showResult() {
 
-                tfTtalSpend.setForeground(Color.RED);
-                tfCurrentDeposit.setForeground(Color.RED);
-            }
-        }
-        
-        return totalSpend;
-    }
-    
-    
-    
-    
-    
-    private double getTotaleDeposit(){
-        
-        totalDeposit = 0;
-        
         try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/payment-status.txt"));
-            while(scan.hasNext()){
-                scan.next();
-                for(int i=0; i<memberCount; i++){
-                    totalDeposit+=(Double.valueOf(scan.next()));
-                }
+
+            String sql = "SELECT SUM(amount) AS total_amount FROM payment_info";
+
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
+
+            if (resultSet.next()) {
+
+                this.tfTotalDeposit.setText(resultSet.getString("total_amount"));
             }
-            scan.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+
+            sql = "SELECT SUM(cost) AS total_cost FROM shopping_cost";
+
+            resultSet = ConnectToDatabase.getResult(sql);
+
+            if (resultSet.next()) {
+
+                this.tfTotalSpend.setText(resultSet.getString("total_cost"));
+            }
+
+            int currentDeposit = Integer.valueOf(this.tfTotalDeposit.getText())
+                    - Integer.valueOf(this.tfTotalSpend.getText());
+            tfCurrentDeposit.setText(String.valueOf(
+                    currentDeposit
+            ));
+
+            if (currentDeposit < 0) {
+
+                this.tfCurrentDeposit.setBackground(Color.red);
+            }
+
+            sql = "SELECT SUM(meal) AS total_meal FROM meal_info";
+
+            resultSet = ConnectToDatabase.getResult(sql);
+
+            if (resultSet.next()) {
+
+                this.tfTotalMeal.setText(resultSet.getString("total_meal"));
+            }
+
+            double mealRate = Integer.valueOf(this.tfTotalSpend.getText())
+                    / Integer.valueOf(this.tfTotalMeal.getText());
+
+            this.tfMealRate.setText(String.valueOf(mealRate));
+
+            sql = "SELECT SUM(cost) / COUNT(DISTINCT date) AS average_shopping "
+                    + " FROM shopping_cost";
+
+            resultSet = ConnectToDatabase.getResult(sql);
+
+            if (resultSet.next()) {
+
+                this.tfAverageShoppingPerDay.setText(resultSet.getString("average_shopping"));
+            }
+        } catch (SQLException | NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null, e);
         }
-        
-        return totalDeposit;
     }
-    
-    
-    
-    
     
     public static void viewStatusFrame() {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -418,17 +308,12 @@ class ViewStatusFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ViewStatusFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ViewStatusFrame().setVisible(true);
             }
@@ -459,6 +344,6 @@ class ViewStatusFrame extends javax.swing.JFrame {
     private javax.swing.JTextField tfMealRate;
     private javax.swing.JTextField tfTotalDeposit;
     private javax.swing.JTextField tfTotalMeal;
-    private javax.swing.JTextField tfTtalSpend;
+    private javax.swing.JTextField tfTotalSpend;
     // End of variables declaration//GEN-END:variables
 }

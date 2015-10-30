@@ -89,7 +89,7 @@
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="tfTotalMeal" alignment="1" min="-2" pref="163" max="-2" attributes="0"/>
                                       <Component id="jSeparator3" alignment="1" max="32767" attributes="0"/>
-                                      <Component id="tfTtalSpend" alignment="1" min="-2" pref="163" max="-2" attributes="0"/>
+                                      <Component id="tfTotalSpend" alignment="1" min="-2" pref="163" max="-2" attributes="0"/>
                                       <Component id="jSeparator2" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jSeparator4" alignment="1" max="32767" attributes="0"/>
                                       <Component id="jSeparator5" alignment="1" max="32767" attributes="0"/>
@@ -129,7 +129,7 @@
                   <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lTotalSpend" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="tfTtalSpend" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tfTotalSpend" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator3" min="-2" pref="10" max="-2" attributes="0"/>
@@ -204,7 +204,7 @@
             <Property name="text" type="java.lang.String" value="Total Spend: "/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="tfTtalSpend">
+        <Component class="javax.swing.JTextField" name="tfTotalSpend">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
