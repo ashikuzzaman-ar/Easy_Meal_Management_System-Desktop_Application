@@ -1,12 +1,9 @@
 package gui;
 
-import java.io.File;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import src.ConnectToDatabase;
@@ -16,11 +13,7 @@ public class DailyUpdate extends javax.swing.JFrame {
     private final DefaultTableModel tableModel;
     private final DateFormat dateFormat;
     private final Date date;
-    private Scanner scan;
-    private final File file = new File("");
-    private Formatter f;
     
-    private String resultString;
     
     public DailyUpdate() {
         initComponents();
