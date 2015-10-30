@@ -10,20 +10,18 @@ import javax.swing.table.DefaultTableModel;
 import src.ConnectToDatabase;
 
 class MemberEntryForm extends javax.swing.JFrame {
-    
+
     private final DefaultTableModel tableModel;
-    
-    private String resultString;
-    
+
     public MemberEntryForm() {
         initComponents();
-        
+
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         lDate.setText("Date: " + date.format(new Date()));
         tableModel = (DefaultTableModel) tblMemberEntryForm.getModel();
-        refresh();
+        this.refresh();
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -187,122 +185,122 @@ class MemberEntryForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
-        
+
         String id = "";
         String name = "";
-        
+
         try {
-            
+
             id = JOptionPane.showInputDialog("Enter ID");
             name = JOptionPane.showInputDialog("Enter Name");
-            
+
             String sql = "INSERT INTO member_info("
                     + "id,name) VALUES ("
                     + "\"" + id + "\", "
                     + "\"" + name + "\")";
-            if ("".equals(name.trim()) && "".equals(String.valueOf(id))) {
-                
-                ConnectToDatabase.getResult(sql);
-                
-                tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                    id, name
-                });
-            } else {
-                
-                JOptionPane.showMessageDialog(null, "ID or Name should not be blank!\nTry again Please.");
-            }
+
+            ConnectToDatabase.getResult(sql);
+
+            this.tableModel.insertRow(tableModel.getRowCount(), new Object[]{
+                id, name
+            });
         } catch (HeadlessException | NumberFormatException e) {
-            
+
             JOptionPane.showMessageDialog(null, e);
         }
+
+        this.refresh();
         
         JOptionPane.showMessageDialog(null, "New Member added named " + name + " in id " + id);
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRefreshActionPerformed
-        
+
         this.refresh();
     }//GEN-LAST:event_bRefreshActionPerformed
 
     private void tblMemberEntryFormMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMemberEntryFormMouseClicked
-        
-        taDisplay.setText("         Member Info\n\n" + "ID: "
-                + String.valueOf(tableModel.getValueAt(
-                                tblMemberEntryForm.getSelectedRow(), 0))
+
+        this.taDisplay.setText("         Member Info\n\n" + "ID: "
+                + String.valueOf(this.tableModel.getValueAt(
+                                this.tblMemberEntryForm.getSelectedRow(), 0))
                 + "\n\n\nName: " + String.valueOf(
-                        tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 1))
+                        this.tableModel.getValueAt(this.tblMemberEntryForm.getSelectedRow(), 1))
         );
     }//GEN-LAST:event_tblMemberEntryFormMouseClicked
 
     private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
-        
+
         try {
-            
-            String name = JOptionPane.showInputDialog(null, "Enter new Name for ID " + tableModel.getValueAt(
-                    tblMemberEntryForm.getSelectedRow(), 0) + ": ");
-            
+
+            String name = JOptionPane.showInputDialog(null, "Enter new Name for ID " + this.tableModel.getValueAt(
+                    this.tblMemberEntryForm.getSelectedRow(), 0) + ": ");
+
             String sql = "UPDATE member_info SET name = "
                     + "\"" + name + "\" "
                     + "WHERE  id = "
-                    + tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 0);
-            
+                    + this.tableModel.getValueAt(this.tblMemberEntryForm.getSelectedRow(), 0);
+
             ConnectToDatabase.getResult(sql);
-            
+
             JOptionPane.showMessageDialog(null, "Member successfully edited named " + name);
         } catch (Exception e) {
-            
+
             JOptionPane.showMessageDialog(null, e);
         }
+        
+        this.refresh();
     }//GEN-LAST:event_bEditActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
-        
+
         try {
-            
-            int id = tblMemberEntryForm.getSelectedRow();
-            
+
+            int id = this.tblMemberEntryForm.getSelectedRow();
+
             String sql = "DELETE FROM member_info WHERE id = "
-                    + tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 0);
-            
+                    + this.tableModel.getValueAt(this.tblMemberEntryForm.getSelectedRow(), 0);
+
             ConnectToDatabase.getResult(sql);
-            
-            tableModel.removeRow(id);
-            
-            JOptionPane.showInputDialog(null, "Member deleted holdin id " + id);
+
+            this.tableModel.removeRow(id);
+
+            JOptionPane.showMessageDialog(null, "Member deleted holdin id " + id);
         } catch (Exception e) {
-            
+
             JOptionPane.showMessageDialog(null, e);
         }
+        
+        this.refresh();
     }//GEN-LAST:event_bDeleteActionPerformed
 
-    
     private void refresh() {
-        
+
         try {
-            
+
             String sql = "SELECT * FROM member_info ORDER BY id";
             ResultSet resultSet = ConnectToDatabase.getResult(sql);
-            
+
             for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
-                
+
                 this.tableModel.removeRow(i);
             }
-            
+
             while (resultSet.next()) {
-                
-                tableModel.insertRow(tableModel.getRowCount(), new Object[]{
+
+                this.tableModel.insertRow(this.tableModel.getRowCount(), new Object[]{
                     resultSet.getString("id"), resultSet.getString("name")
                 });
             }
         } catch (Exception e) {
-            
+
             JOptionPane.showMessageDialog(null, e);
         }
-        
+
     }
-    
+
     public static void memberEntry() {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -313,7 +311,7 @@ class MemberEntryForm extends javax.swing.JFrame {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MemberEntryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {

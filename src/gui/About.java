@@ -33,16 +33,12 @@ public class About extends javax.swing.JFrame {
         pAbout.setLayout(pAboutLayout);
         pAboutLayout.setHorizontalGroup(
             pAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pAboutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spAbout, javax.swing.GroupLayout.DEFAULT_SIZE, 628, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(spAbout, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
         );
         pAboutLayout.setVerticalGroup(
             pAboutLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pAboutLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(spAbout, javax.swing.GroupLayout.DEFAULT_SIZE, 485, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAboutLayout.createSequentialGroup()
+                .addComponent(spAbout, javax.swing.GroupLayout.DEFAULT_SIZE, 547, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
