@@ -1,40 +1,28 @@
 package gui;
 
-import java.io.File;
+import java.awt.HeadlessException;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import src.ConnectToDatabase;
 
 class MemberEntryForm extends javax.swing.JFrame {
-
     
-    private File file = new File("");
-    private Formatter f;
-    private Scanner scan;
-    
-    private DefaultTableModel tableModel;
+    private final DefaultTableModel tableModel;
     
     private String resultString;
-    
-    
-    
     
     public MemberEntryForm() {
         initComponents();
         
-        
-        
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
-        lDate.setText("Date: "+date.format(new Date()));
-        tableModel = (DefaultTableModel)tblMemberEntryForm.getModel();
+        lDate.setText("Date: " + date.format(new Date()));
+        tableModel = (DefaultTableModel) tblMemberEntryForm.getModel();
         refresh();
     }
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -199,131 +187,119 @@ class MemberEntryForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAddActionPerformed
-
-        String id = String.valueOf(tableModel.getRowCount()+1);
-        String name = JOptionPane.showInputDialog(null, "Enter Member's Name: ");
-        if(name.trim() != "" && id.trim() != ""){
+        
+        int id = 0;
+        String name = "";
+        
+        try {
             
-            tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                id,name
-            });
-        } else {
+            id = Integer.parseInt(JOptionPane.showInputDialog("Enter ID"));
+            name = JOptionPane.showInputDialog("Enter Name");
             
-            JOptionPane.showMessageDialog(null, "ID or Name should not be blank!\nTry again Please.");
+            String sql = "INSERT INTO member_info("
+                    + "id,name) VALUES ("
+                    + id + ", "
+                    + "\"" + name + "\")";
+            if ("".equals(name.trim()) && "".equals(String.valueOf(id))) {
+                
+                ConnectToDatabase.getResult(sql);
+                
+                tableModel.insertRow(tableModel.getRowCount(), new Object[]{
+                    id, name
+                });
+            } else {
+                
+                JOptionPane.showMessageDialog(null, "ID or Name should not be blank!\nTry again Please.");
+            }
+        } catch (HeadlessException | NumberFormatException e) {
+            
+            JOptionPane.showMessageDialog(null, e);
         }
         
-        fileWrite();
-        JOptionPane.showMessageDialog(null, "New Member added named "+name+" in id "+id);
+        JOptionPane.showMessageDialog(null, "New Member added named " + name + " in id " + id);
     }//GEN-LAST:event_bAddActionPerformed
 
     private void bRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRefreshActionPerformed
-
-        dispose();
-        memberEntry();
+        
+        this.refresh();
     }//GEN-LAST:event_bRefreshActionPerformed
 
     private void tblMemberEntryFormMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMemberEntryFormMouseClicked
-
-        taDisplay.setText("         Member Info\n\n"+"ID: "+
-                String.valueOf(tableModel.getValueAt(
-                tblMemberEntryForm.getSelectedRow(), 0))
-        +"\n\n\nName: "+String.valueOf(
-                tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 1))
+        
+        taDisplay.setText("         Member Info\n\n" + "ID: "
+                + String.valueOf(tableModel.getValueAt(
+                                tblMemberEntryForm.getSelectedRow(), 0))
+                + "\n\n\nName: " + String.valueOf(
+                        tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 1))
         );
     }//GEN-LAST:event_tblMemberEntryFormMouseClicked
 
     private void bEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEditActionPerformed
-
         
-        String name = JOptionPane.showInputDialog(null, "Enter new Name for ID "+tableModel.getValueAt(
-                tblMemberEntryForm.getSelectedRow(), 0)+": ");
-        
-        tableModel.setValueAt(name, tblMemberEntryForm.getSelectedRow(), 1);
-        
-        fileWrite();
-        JOptionPane.showMessageDialog(null, "Member successfully edited named "+name);
+        try {
+            
+            String name = JOptionPane.showInputDialog(null, "Enter new Name for ID " + tableModel.getValueAt(
+                    tblMemberEntryForm.getSelectedRow(), 0) + ": ");
+            
+            String sql = "UPDATE member_info SET name = "
+                    + "\"" + name + "\" "
+                    + "WHERE  id = "
+                    + tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 0);
+            
+            ConnectToDatabase.getResult(sql);
+            
+            JOptionPane.showMessageDialog(null, "Member successfully edited named " + name);
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_bEditActionPerformed
 
     private void bDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeleteActionPerformed
-
-        int id = tblMemberEntryForm.getSelectedRow();
         
-        tableModel.removeRow(id);
-        
-        fileWrite();
-        
-        JOptionPane.showInputDialog(null,"Member deleted holdin id "+id);
+        try {
+            
+            int id = tblMemberEntryForm.getSelectedRow();
+            
+            String sql = "DELETE FROM member_info WHERE id = "
+                    + tableModel.getValueAt(tblMemberEntryForm.getSelectedRow(), 0);
+            
+            ConnectToDatabase.getResult(sql);
+            
+            tableModel.removeRow(id);
+            
+            JOptionPane.showInputDialog(null, "Member deleted holdin id " + id);
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_bDeleteActionPerformed
 
-   
     
-    
-    
-    
-    static int rowNumber(){
-        
-        
-        return new MemberEntryForm().tableModel.getRowCount();
-    }
-    
-    
-    
-    
-    
-    
-    private void fileWrite(){
-        
-        getInfo();
+    private void refresh() {
         
         try {
             
-            f = new Formatter(file.getAbsolutePath()+"/.EMMS-Res/member-list.txt");
-            f.format("%s", resultString);
-            f.close();
-        } catch (Exception e) {
+            String sql = "SELECT * FROM member_info ORDER BY id";
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
             
-            System.exit(0);
-        }
-    }
-    
-    
-    private void getInfo(){
-        
-        resultString = "";
-        
-        try {
-            
-            for(int i=0; i<tableModel.getRowCount(); i++){
+            for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
                 
-                resultString+=(String.valueOf(i+1)+"\n"+tableModel.getValueAt(i, 1)+"\n");
+                this.tableModel.removeRow(i);
             }
-        } catch (Exception e) {
             
-            System.exit(0);
-        }
-    }
-    
-    
-    private void refresh(){
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/member-list.txt"));
-            while(scan.hasNext()){
+            while (resultSet.next()) {
                 
                 tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                    scan.nextLine(),scan.nextLine()
+                    resultSet.getString("id"), resultSet.getString("name")
                 });
             }
-            scan.close();
         } catch (Exception e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+            JOptionPane.showMessageDialog(null, e);
         }
         
     }
-    
-    
     
     public static void memberEntry() {
         
@@ -334,17 +310,12 @@ class MemberEntryForm extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MemberEntryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MemberEntryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MemberEntryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MemberEntryForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new MemberEntryForm().setVisible(true);
             }
