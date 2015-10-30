@@ -192,6 +192,8 @@ public class PaymentUpdate extends javax.swing.JFrame {
                             + "\"" + this.tableModel.getValueAt(i, 0) + "\","
                             + "\"" + this.dateFormat.format(date) + "\","
                             + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
+                    
+                    ConnectToDatabase.getResult(sql);
                 }
             }
 
