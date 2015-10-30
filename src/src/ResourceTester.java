@@ -1,50 +1,36 @@
+
 package src;
 
 import java.awt.HeadlessException;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Formatter;
 import javax.swing.JOptionPane;
 
-
 public class ResourceTester {
+        
+    private final File dummy ;
+    private final File file ;
     
-    File dummy = new File("");
-    File file = new File(dummy.getAbsolutePath()+"/.EMMS-Res");
-    Formatter f;
+    public ResourceTester(){
+        
+        this.dummy = new File("");
+        this.file = new File(dummy.getAbsolutePath()+"/.EMMS-RES");
+    }
     
-    public void check(){
+    
+    
+    public void createDirectory(){
         
         
         try {
             
-            if(!file.exists()){
+            if(!this.file.exists()){
                 
-                file.mkdir();
-                
-                f = new Formatter(file.getAbsolutePath()+"/member-list.txt");
-                f.close();
-                
-                f = new Formatter(file.getAbsolutePath()+"/meal-status.txt");
-                f.close();
-                
-                f = new Formatter(file.getAbsolutePath()+"/shopping-status.txt");
-                f.close();
-                
-                f = new Formatter(file.getAbsolutePath()+"/payment-status.txt");
-                f.close();
-
-                JOptionPane.showMessageDialog(null, "Thank you for usng Easy Meal Management "
-                            + "System. All are functioning well. Enjoy!");
-            }   
-            
-            
-        } catch (FileNotFoundException | HeadlessException e) {
+                this.file.mkdirs();
+            }  
+        } catch (HeadlessException e) {
             
             JOptionPane.showMessageDialog(null, "System Erron!\n"
                         + "Please drop a mail to ashik.ar.420@gmail.com");
         }
-        
-    }
-    
+    }    
 }
