@@ -1,41 +1,29 @@
-
 package gui;
 
-import java.io.File;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Formatter;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import src.ConnectToDatabase;
 
 public class PaymentUpdate extends javax.swing.JFrame {
 
-    
-    private DateFormat dateFormat;
-    private Date date;
-    private Scanner scan ;
-    private File file = new File("");
-    private DefaultTableModel tableModel;
-    private String resultString;
-    private Formatter f;
-    
-    
+    private final DateFormat dateFormat;
+    private final Date date;
+    private final DefaultTableModel tableModel;
+
     public PaymentUpdate() {
         initComponents();
-        
-        
-        
+
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
         tfCurrentDate.setText(dateFormat.format(date));
-        tableModel = (DefaultTableModel)tblPaymentUpdate.getModel();
-        getNameID();
+        tableModel = (DefaultTableModel) tblPaymentUpdate.getModel();
+        initializeNameID();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -177,98 +165,67 @@ public class PaymentUpdate extends javax.swing.JFrame {
 
     private void bRefreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRefreshActionPerformed
 
-        dispose();
-        paymentUpdate();
+        try {
+
+            for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
+
+                this.tableModel.removeRow(i);
+            }
+
+            this.initializeNameID();
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_bRefreshActionPerformed
 
     private void bUpdatePaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdatePaymentActionPerformed
 
-        fileWrite();
-        JOptionPane.showMessageDialog(null, "Payment successfully Uploaded by "+tfCurrentDate.getText());
+        try {
+
+            for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
+
+                if (!"".equals(this.tableModel.getValueAt(i, 2))) {
+
+                    String sql = "INSERT INTO payment_info("
+                            + "id,date,amount) VALUES("
+                            + "\"" + this.tableModel.getValueAt(i, 0) + "\","
+                            + "\"" + this.dateFormat.format(date) + "\","
+                            + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
+                }
+            }
+
+            JOptionPane.showMessageDialog(null, "Payment successfully Uploaded by "
+                    + tfCurrentDate.getText());
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_bUpdatePaymentActionPerformed
 
-    
-    
-    
-    
-    private void fileWrite(){
-        
-        getInfo();
-        
+    private void initializeNameID() {
+
         try {
-            
-            f = new Formatter(file.getAbsolutePath()+"/.EMMS-Res/payment-status.txt");
-            f.format("%s", resultString);
-            f.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-    }
-    
-    
-    
-    
-    
-    
-    private void getInfo(){
-        
-        resultString = "";
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/payment-status.txt"));
-            while(scan.hasNext()){
-                
-                resultString += (scan.nextLine()+"\n");
-            }
-            scan.close();
-            
-            resultString+=(tfCurrentDate.getText()+" ");
-            for(int i=0; i<tableModel.getRowCount(); i++){
-                
-                resultString+=(tblPaymentUpdate.getValueAt(i, 2)+" ");
-            }
-            resultString += "\n";
-            
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Faled!");
-        }
-    }
-    
-    
-    
-    
-    
-    
-    
-    private void getNameID(){
-        
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/member-list.txt"));
-            while(scan.hasNext()){
-                
+
+            String sql = "SELECT id, name FROM member_info";
+
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
+
+            while (resultSet.next()) {
+
                 tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                    scan.nextLine(),scan.nextLine(),"0"
+                    resultSet.getString("id"), resultSet.getString("name"), ""
                 });
             }
-            scan.close();
         } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+
+            JOptionPane.showMessageDialog(null, e);
         }
-        
+
     }
-    
-    
-    
-    
-    
+
     public static void paymentUpdate() {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -276,17 +233,12 @@ public class PaymentUpdate extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PaymentUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PaymentUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PaymentUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(PaymentUpdate.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new PaymentUpdate().setVisible(true);
             }
