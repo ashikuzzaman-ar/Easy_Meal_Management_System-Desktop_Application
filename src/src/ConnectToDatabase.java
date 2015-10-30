@@ -22,7 +22,7 @@ public class ConnectToDatabase {
 
             Class.forName("org.sqlite.JDBC");
             ConnectToDatabase.connection = DriverManager.getConnection(
-                    "jdbc:sqlite:"+file.getAbsolutePath()+"/.EMMS-RES/datas.sqlite");
+                    "jdbc:sqlite:"+file.getAbsolutePath()+"/EMMS-RES/datas.sqlite");
             ConnectToDatabase.statement = ConnectToDatabase.connection.createStatement();
         } catch (ClassNotFoundException | SQLException e) {
             
