@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Help"/>
+    <Property name="alwaysOnTop" type="boolean" value="true"/>
+    <Property name="resizable" type="boolean" value="false"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="pHelp" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="pHelp" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="pHelp">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="spHelp" alignment="0" pref="606" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="spHelp" pref="493" max="32767" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="spHelp">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="taHelp">
+              <Properties>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="rows" type="int" value="5"/>
+                <Property name="text" type="java.lang.String" value="&#xa;01.    At first you have to make sure that you don&apos;t delete or move the directory ( folder )&#xa;named &quot;.EMMS-Res&quot; and any file located inside of this directory. This directory will be &#xa;created autometically at first startup of this software. This directory  remains hidden in &#xa;Unix like Operating Systems like Linux , BSD, OS-X etc for security reason. This directory &#xa;will be created autometically in the same location where this software is stored. &#xa;&#xa;&#xa;02.   For using this software you have to create list. To create member list you have to &#xa;click &quot;Edit Members&quot; button. Then a new window will opened and then click &quot;Add&quot; button &#xa;to add new members. You can also edit or delete members list gradually by clicking &quot;Edit&quot; &#xa;and  &quot;Delete&quot; buttons. Though you can edit, delete or add new members but it is strongly&#xa;recomended not to do so in the middle of a running month. It may loose you entire &#xa;dataset.&#xa;&#xa;&#xa;03.   After creating a complete members list you should close the member entry window &#xa;and then you can start your another entry and all will be calculated by itself autometically.&#xa;&#xa;&#xa;04. To update daily meal and shopping cost you have to click &quot;Daily Update&quot; button. A &#xa;new window will be opened. For updating meal status , edit the table containing members&#xa;name and click &quot;Update Meal&quot;. For updating shopping cost , edit shopping cost box and&#xa;click &quot;Update Shopping Cost&quot; button. You have to seperately click those buttons. If you&#xa;want to update a older history you can change the date box located at top right corner&#xa;of this window.&#xa;&#xa;&#xa;05.   You can update payment by clcking &quot;Add Payment&quot; button. After clicking this button &#xa;a new window will be opened. Just simply edit the payment currency from the table and &#xa;left unchanged who don&apos;t pay. A confirmation window will confirm you about the success.&#xa;&#xa;&#xa;06. You can watch your managerial overview by simply clicking &quot;View Status&quot; button. it&#xa;will open a new window containing total deposit, total spend, current deposit, total &#xa;meal, meal rate and average spend per day. If you want to see the complete view just &#xa;just click &quot;View Full Mode&quot; button. It will show you the whole overview of your your &#xa;managerial status. &#xa;&#xa;&#xa;07.   If you want to delete all datas and reset all settings to start a new managerial table &#xa;just click &quot;Reset All&quot; button. Be sure that it will delete and reset all your previous datas &#xa;and you can&apos;t see them again.&#xa;&#xa;&#xa;08.   To close this software you have to click &quot;Close&quot; button or close icon of the window.&#xa;&#xa;&#xa;&#x9;&#x9;------Thank You Very Much------"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
