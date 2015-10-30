@@ -1,60 +1,37 @@
 package gui;
 
-import java.io.File;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import src.ConnectToDatabase;
 
 class ViewFullMode extends javax.swing.JFrame {
-    
 
-    private int memberNumber = MemberEntryForm.rowNumber();
-    
-    
-    private String[] name  = new String[memberNumber];
-    private double[] mealAdvance = new double[memberNumber];
-    private double[] totalMeal = new double[memberNumber];
-    private double[] mealCost = new double[memberNumber];
-    private double[] accountStatus = new double[memberNumber];
-    
-    
-    private File file = new File("");
-    private Scanner scan ;
-    
-    
-    private DefaultTableModel tableModelAccount ;
-    private DefaultTableModel tableModelShoppingStatus ;
-    private DefaultTableModel tableModelMealStatus ;
-    
-    
-
+    private final DefaultTableModel tableModelAccount;
+    private final DefaultTableModel tableModelShoppingStatus;
+    private final DefaultTableModel tableModelMealStatus;
 
     public ViewFullMode() {
         initComponents();
-        
-        
-        
-        
-        
+
         DateFormat date = new SimpleDateFormat("dd/MM/yyyy");
         DateFormat time = new SimpleDateFormat("HH:mm");
-        lDate.setText("Toda's Date: "+date.format(new Date()));
-        lTime.setText("Current Time: "+time.format(new Date()));
-        
-        tableModelAccount = (DefaultTableModel)tblAccountStatus.getModel();
-        tableModelShoppingStatus = (DefaultTableModel)tblShoppingStatus.getModel();
-        tableModelMealStatus = (DefaultTableModel)tblMealStatus.getModel();
-        
-        
+        lDate.setText("Toda's Date: " + date.format(new Date()));
+        lTime.setText("Current Time: " + time.format(new Date()));
+
+        tableModelAccount = (DefaultTableModel) tblAccountStatus.getModel();
+        tableModelShoppingStatus = (DefaultTableModel) tblShoppingStatus.getModel();
+        tableModelMealStatus = (DefaultTableModel) tblMealStatus.getModel();
+
         getAccountStatus();
         getShoppingStatus();
         getMealStatus();
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -75,7 +52,6 @@ class ViewFullMode extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Full Mode View");
-        setResizable(false);
 
         tblAccountStatus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,14 +91,14 @@ class ViewFullMode extends javax.swing.JFrame {
             pAccountStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAccountStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spAccountStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                .addComponent(spAccountStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pAccountStatusLayout.setVerticalGroup(
             pAccountStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pAccountStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spAccountStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 461, Short.MAX_VALUE))
+                .addComponent(spAccountStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE))
         );
 
         tpViewFullMode.addTab("Account Status", pAccountStatus);
@@ -162,14 +138,14 @@ class ViewFullMode extends javax.swing.JFrame {
             pShoppingStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pShoppingStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spShoppingStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                .addComponent(spShoppingStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
                 .addContainerGap())
         );
         pShoppingStatusLayout.setVerticalGroup(
             pShoppingStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pShoppingStatusLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spShoppingStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addComponent(spShoppingStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -180,11 +156,11 @@ class ViewFullMode extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date"
+                "Date", "Name", "Meal"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -194,19 +170,19 @@ class ViewFullMode extends javax.swing.JFrame {
         spMealStatus.setViewportView(tblMealStatus);
         if (tblMealStatus.getColumnModel().getColumnCount() > 0) {
             tblMealStatus.getColumnModel().getColumn(0).setResizable(false);
+            tblMealStatus.getColumnModel().getColumn(1).setResizable(false);
+            tblMealStatus.getColumnModel().getColumn(2).setResizable(false);
         }
 
         javax.swing.GroupLayout pMealStatusLayout = new javax.swing.GroupLayout(pMealStatus);
         pMealStatus.setLayout(pMealStatusLayout);
         pMealStatusLayout.setHorizontalGroup(
             pMealStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(spMealStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addComponent(spMealStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 966, Short.MAX_VALUE)
         );
         pMealStatusLayout.setVerticalGroup(
             pMealStatusLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pMealStatusLayout.createSequentialGroup()
-                .addComponent(spMealStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 40, Short.MAX_VALUE))
+            .addComponent(spMealStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
         );
 
         tpViewFullMode.addTab("Meal Status", pMealStatus);
@@ -239,7 +215,7 @@ class ViewFullMode extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tpViewFullMode)
+                    .addComponent(tpViewFullMode, javax.swing.GroupLayout.DEFAULT_SIZE, 966, Short.MAX_VALUE)
                     .addComponent(pDateTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -249,172 +225,123 @@ class ViewFullMode extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(pDateTime, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tpViewFullMode)
+                .addComponent(tpViewFullMode, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
-    
-    
-    
-    
-    
-    private void getMealStatus(){
-        
-        
-        for(int i=0; i<memberNumber; i++){
-            
-            tableModelMealStatus.addColumn(name[i]);
-        }
-        
-        
+    private void getMealStatus() {
+
         try {
-            
-            int a = 0;
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/meal-status.txt"));
-            while(scan.hasNext()){
-                
-                String[] meal = new String[memberNumber+1];
-                
-                for(int i=0; i<=memberNumber; i++){
-                    meal[i] = scan.next();
-                }
-                
-                tableModelMealStatus.insertRow(a, meal);
-                
-                a++;
-            }
-            scan.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-        
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    private void getShoppingStatus(){
-        
-        
-        try {
-            
-            int a = 0;
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/shopping-status.txt"));
-            while(scan.hasNext()){
-                
-                tableModelShoppingStatus.insertRow(a, new Object[]{
-                    
-                    scan.nextLine(),scan.nextLine()
+
+            String sql = "SELECT name, date, meal FROM meal_info, member_info WHERE "
+                    + "meal_info.id = member_info.id ORDER BY date ASC, member_info.id ASC";
+
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
+
+            while (resultSet.next()) {
+
+                this.tableModelMealStatus.addRow(new Object[]{
+                    resultSet.getString("date"),
+                    resultSet.getString("name"),
+                    resultSet.getString("meal")
                 });
-                a++;
             }
-            scan.close();
+
+        } catch (SQLException | NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(null, e);
+        }
+
+    }
+
+    private void getShoppingStatus() {
+
+        try {
+
+            String sql = "SELECT date, cost FROM shopping_cost ORDER BY date DESC";
+
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
+
+            while (resultSet.next()) {
+
+                this.tableModelShoppingStatus.addRow(new Object[]{
+                    resultSet.getString("date"),
+                    resultSet.getString("cost")
+                });
+            }
         } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+
+            JOptionPane.showMessageDialog(null, e);
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    private void getAccountStatus(){
-        
-        
-        int a = 0;
-        
-        
-        
-        // Geting member Name
+
+    private void getAccountStatus() {
+
         try {
             
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/member-list.txt"));
-            while(scan.hasNext()){
-                scan.nextLine();
-                name[a] = scan.nextLine();
-                a++;
+            String sql;
+            ResultSet resultSet;
+            
+            sql = "SELECT SUM(cost) AS total_cost FROM shopping_cost";
+
+            resultSet = ConnectToDatabase.getResult(sql);
+            
+            double totalCost = 0, totalMeal = 0, mealRate = 0;
+            if (resultSet.next()) {
+
+                totalCost = Double.valueOf(resultSet.getString("total_cost"));
             }
-            scan.close();
-        } catch (Exception e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-        
-        
-        // Geting Meal Advance
-        try {
             
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/payment-status.txt"));
-            while(scan.hasNext()){
-                
-                scan.next();
-                for(int i=0; i<memberNumber; i++){
-                    mealAdvance[i]+=Double.valueOf(scan.next());
-                }
+            sql = "SELECT SUM(meal) AS total_meal FROM meal_info";
+
+            resultSet = ConnectToDatabase.getResult(sql);
+
+            if (resultSet.next()) {
+
+                totalMeal = Double.valueOf(resultSet.getString("total_meal"));
             }
-            scan.close();
-        } catch (Exception e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-        
-        
-        // Geting Total Meal
-        try {
+            mealRate = totalCost/totalMeal;
             
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/meal-status.txt"));
-            while(scan.hasNext()){
+            
+            sql = "SELECT id, name FROM member_info";
+            
+            resultSet = ConnectToDatabase.getResult(sql);
+            
+            while (resultSet.next()) {
                 
-                scan.next();
-                for(int i=0; i<memberNumber; i++){
-                    totalMeal[i]+=Double.valueOf(scan.next());
-                    
-                }
+                sql = "SELECT SUM(amount) AS advance FROM payment_info WHERE id = "
+                        + resultSet.getString("id");
+                
+                ResultSet resultSet2 = ConnectToDatabase.getResult(sql);
+                
+                
+                sql = "SELECT SUM(meal) AS total_meal FROM meal_info WHERE id = "
+                        + resultSet.getString("id");
+                
+                ResultSet resultSet3 = ConnectToDatabase.getResult(sql);
+                this.tableModelAccount.addRow(new Object[]{
+                    resultSet.getString("id"),
+                    resultSet.getString("name"),
+                    resultSet2.getString("advance"),
+                    resultSet3.getString("total_meal"),
+                    mealRate*Double.valueOf(resultSet3.getString("total_meal")),
+                    Double.valueOf(resultSet2.getString("advance")) 
+                            - mealRate*Double.valueOf(resultSet3.getString("total_meal"))
+                });
             }
-            scan.close();
-        } catch (Exception e) {
+        } catch (SQLException | NumberFormatException e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+            JOptionPane.showMessageDialog(null, e);
         }
-        
-        
-        
-        
-        for(int i=0; i<memberNumber; i++){
-            
-            mealCost[i] = totalMeal[i]*(new ViewStatusFrame().getMealRate());
-            accountStatus[i] = mealAdvance[i] - mealCost[i];
-            tableModelAccount.insertRow(i, new Object[]{
-                
-                i+1, name[i], mealAdvance[i], totalMeal[i], mealCost[i], accountStatus[i]
-            });
-        }
-        
     }
-    
-    
-    
-    
-    
-    
+
     public static void viewFullMode() {
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -422,17 +349,12 @@ class ViewFullMode extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ViewFullMode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ViewFullMode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ViewFullMode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ViewFullMode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        
+
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ViewFullMode().setVisible(true);
             }
