@@ -1,6 +1,7 @@
 package gui;
 
 import java.io.File;
+import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,15 +9,14 @@ import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import src.ConnectToDatabase;
 
 public class DailyUpdate extends javax.swing.JFrame {
-
-
-    private final DefaultTableModel tableModel ;
+    
+    private final DefaultTableModel tableModel;
     private final DateFormat dateFormat;
     private final Date date;
-    private Scanner scan ;
+    private Scanner scan;
     private final File file = new File("");
     private Formatter f;
     
@@ -25,15 +25,13 @@ public class DailyUpdate extends javax.swing.JFrame {
     public DailyUpdate() {
         initComponents();
         
-        
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         date = new Date();
-        lCurrentDate.setText(lCurrentDate.getText()+dateFormat.format(date));
+        lCurrentDate.setText(lCurrentDate.getText() + dateFormat.format(date));
         tfModificationDate.setText(dateFormat.format(date));
-        tableModel = (DefaultTableModel)tblMealUpdate.getModel();
-        tableCreator();
+        tableModel = (DefaultTableModel) tblMealUpdate.getModel();
+        tableInitializer();
     }
-
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -118,11 +116,11 @@ public class DailyUpdate extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Name", "Meal"
+                "ID", "Name", "Meal"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true
+                false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -133,6 +131,7 @@ public class DailyUpdate extends javax.swing.JFrame {
         if (tblMealUpdate.getColumnModel().getColumnCount() > 0) {
             tblMealUpdate.getColumnModel().getColumn(0).setResizable(false);
             tblMealUpdate.getColumnModel().getColumn(1).setResizable(false);
+            tblMealUpdate.getColumnModel().getColumn(2).setResizable(false);
         }
 
         lMealUpdate.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
@@ -263,129 +262,79 @@ public class DailyUpdate extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void bCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelActionPerformed
-
+        
         dispose();
     }//GEN-LAST:event_bCancelActionPerformed
 
     private void bUpdateShoppingCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateShoppingCostActionPerformed
+        
+        try {
+            
+            if (!"".equals(this.tfShoppingCost.getText())) {
 
-        fileWriteShopping();
-        JOptionPane.showMessageDialog(null, "Shopping cost updated by "+tfModificationDate.getText());
+                String sql = "INSERT INTO shopping_cost("
+                        + "date,cost) VALUES("
+                        + "\"" + this.dateFormat.format(date) + "\","
+                        + "\"" + this.tfShoppingCost.getText() + "\")";
+                
+                ConnectToDatabase.getResult(sql);
+            } else {
+                
+                JOptionPane.showMessageDialog(null, "Please enter a shopping cost.");
+            }
+            JOptionPane.showMessageDialog(null, "Shopping cost updated by "
+                    + tfModificationDate.getText());
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
+        }
+
     }//GEN-LAST:event_bUpdateShoppingCostActionPerformed
 
     private void bUpdateMealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bUpdateMealActionPerformed
-
-        fileWriteMeal();
-        JOptionPane.showMessageDialog(null, "Meal updated by "+tfModificationDate.getText());
+        
+        try {
+            
+            for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
+                
+                if (!"".equals(this.tableModel.getValueAt(i, 2))) {
+                    
+                    String sql = "INSERT INTO meal_info("
+                            + "id,date,meal) VALUES("
+                            + "\"" + this.tableModel.getValueAt(i, 0) + "\","
+                            + "\"" + this.dateFormat.format(date) + "\","
+                            + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
+                    
+                    ConnectToDatabase.getResult(sql);
+                }
+            }
+            JOptionPane.showMessageDialog(null, "Meal updated by "
+                    + this.tfModificationDate.getText());
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, e);
+        }
     }//GEN-LAST:event_bUpdateMealActionPerformed
-
     
-    
-    
-    private void fileWriteMeal(){
-        
-        getInfoMeal();
+    private void tableInitializer() {
         
         try {
             
-            f = new Formatter(file.getAbsolutePath()+"/.EMMS-Res/meal-status.txt");
-            f.format("%s", resultString);
-            f.close();
-        } catch (Exception e) {
+            String sql = "SELECT id, name FROM member_info";
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-    }
-    
-    
-    
-    
-    
-    private void getInfoMeal(){
-        
-        resultString = "";
-        
-        try {
+            ResultSet resultSet = ConnectToDatabase.getResult(sql);
             
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/meal-status.txt"));
-            while(scan.hasNext()){
+            while (resultSet.next()) {
                 
-                resultString += (scan.nextLine()+"\n");
-            }
-            scan.close();
-            
-            resultString+=(tfModificationDate.getText()+" ");
-            for(int i=0; i<tableModel.getRowCount(); i++){
-                
-                resultString+=(tblMealUpdate.getValueAt(i, 1)+" ");
-            }
-            resultString += "\n";
-            
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Faled!");
-        }
-    }
-    
-    
-    
-    private void fileWriteShopping(){
-        
-        getInfoShopping();
-        
-        try {
-            
-            f = new Formatter(file.getAbsolutePath()+"/.EMMS-Res/shopping-status.txt");
-            f.format("%s", resultString);
-            f.close();
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-    }
-    
-    
-    private void getInfoShopping(){
-        
-        resultString = "";
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/shopping-status.txt"));
-            while(scan.hasNext()){
-                
-                resultString += (scan.nextLine()+"\n");
-            }
-            scan.close();
-            resultString+=(tfModificationDate.getText()+"\n"+tfShoppingCost.getText()+"\n");
-        } catch (Exception e) {
-            
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        }
-    }
-    
-    
-    
-    private void tableCreator(){
-        
-        try {
-            
-            scan = new Scanner(new File(file.getAbsolutePath()+"/.EMMS-Res/member-list.txt"));
-            while(scan.hasNext()){
-                scan.nextLine();
                 tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                    scan.nextLine(),"0"
+                    resultSet.getString("id"), resultSet.getString("name"), ""
                 });
             }
-            scan.close();
         } catch (Exception e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
-        } 
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
-    
-    
-    
     
     public static void dailyUpdate() {
         
@@ -408,8 +357,7 @@ public class DailyUpdate extends javax.swing.JFrame {
         });
     }
 
-    
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancel;
     private javax.swing.JButton bUpdateMeal;
