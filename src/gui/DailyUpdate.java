@@ -267,7 +267,7 @@ public class DailyUpdate extends javax.swing.JFrame {
 
                 String sql = "INSERT INTO shopping_cost("
                         + "date,cost) VALUES("
-                        + "\"" + this.dateFormat.format(date) + "\","
+                        + "\"" + this.tfModificationDate.getText() + "\","
                         + "\"" + this.tfShoppingCost.getText() + "\")";
                 
                 ConnectToDatabase.getResult(sql);
@@ -295,7 +295,7 @@ public class DailyUpdate extends javax.swing.JFrame {
                     String sql = "INSERT INTO meal_info("
                             + "id,date,meal) VALUES("
                             + "\"" + this.tableModel.getValueAt(i, 0) + "\","
-                            + "\"" + this.dateFormat.format(date) + "\","
+                            + "\"" + this.tfModificationDate.getText() + "\","
                             + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
                     
                     ConnectToDatabase.getResult(sql);
