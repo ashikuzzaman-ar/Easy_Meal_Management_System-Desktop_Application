@@ -109,16 +109,15 @@ public class ConfirmReset extends javax.swing.JFrame {
 
         try {
             
-            file = new File(dummy.getAbsolutePath()+"/.EMMS-RES");
+            file = new File(dummy.getAbsolutePath()+"/EMMS-RES");
             FileUtil.delete(file);
             
-            ResourceTester rs = new ResourceTester();
-            rs.createDirectory();
+            new ResourceTester().createDirectory();
             dispose();
             
         } catch (Exception e) {
             
-            JOptionPane.showMessageDialog(null, "File Operation Failed!");
+            JOptionPane.showMessageDialog(null, e);
             dispose();
         }
     }//GEN-LAST:event_bYesActionPerformed
