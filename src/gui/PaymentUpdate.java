@@ -185,16 +185,13 @@ public class PaymentUpdate extends javax.swing.JFrame {
 
             for (int i = this.tableModel.getRowCount() - 1; i >= 0; i--) {
 
-                if (!"".equals(this.tableModel.getValueAt(i, 2))) {
+                String sql = "INSERT INTO payment_info("
+                        + "id,date,amount) VALUES("
+                        + "\"" + this.tableModel.getValueAt(i, 0) + "\","
+                        + "\"" + this.dateFormat.format(date) + "\","
+                        + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
 
-                    String sql = "INSERT INTO payment_info("
-                            + "id,date,amount) VALUES("
-                            + "\"" + this.tableModel.getValueAt(i, 0) + "\","
-                            + "\"" + this.dateFormat.format(date) + "\","
-                            + "\"" + this.tableModel.getValueAt(i, 2) + "\")";
-                    
-                    ConnectToDatabase.getResult(sql);
-                }
+                ConnectToDatabase.getResult(sql);
             }
 
             JOptionPane.showMessageDialog(null, "Payment successfully Uploaded by "
@@ -216,7 +213,7 @@ public class PaymentUpdate extends javax.swing.JFrame {
             while (resultSet.next()) {
 
                 tableModel.insertRow(tableModel.getRowCount(), new Object[]{
-                    resultSet.getString("id"), resultSet.getString("name"), ""
+                    resultSet.getString("id"), resultSet.getString("name"), "0"
                 });
             }
         } catch (Exception e) {
