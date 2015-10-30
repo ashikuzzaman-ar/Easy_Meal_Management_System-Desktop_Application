@@ -1,5 +1,8 @@
 
-package home;
+package src;
+
+import gui.MainFrame;
+
 
 public class Main {
     

@@ -1,4 +1,4 @@
-package home;
+package gui;
 
 import java.awt.Color;
 import java.io.File;

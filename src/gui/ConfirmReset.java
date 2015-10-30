@@ -1,6 +1,7 @@
 
-package home;
+package gui;
 
+import src.ResourceTester;
 import java.io.File;
 import javax.swing.JOptionPane;
 import org.eclipse.persistence.tools.file.FileUtil;
@@ -9,7 +10,7 @@ import org.eclipse.persistence.tools.file.FileUtil;
 public class ConfirmReset extends javax.swing.JFrame {
 
     
-    private File dummy = new File("");
+    private final File dummy = new File("");
     private File file;
     
     public ConfirmReset() {

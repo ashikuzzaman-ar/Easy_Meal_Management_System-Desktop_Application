@@ -1,11 +1,11 @@
-package home;
+package gui;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-class MainFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame() {
         initComponents();

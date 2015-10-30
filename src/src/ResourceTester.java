@@ -1,17 +1,19 @@
-package home;
+package src;
 
+import java.awt.HeadlessException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Formatter;
 import javax.swing.JOptionPane;
 
 
-class ResourceTester {
+public class ResourceTester {
     
     File dummy = new File("");
     File file = new File(dummy.getAbsolutePath()+"/.EMMS-Res");
     Formatter f;
     
-    void check(){
+    public void check(){
         
         
         try {
@@ -37,7 +39,7 @@ class ResourceTester {
             }   
             
             
-        } catch (Exception e) {
+        } catch (FileNotFoundException | HeadlessException e) {
             
             JOptionPane.showMessageDialog(null, "System Erron!\n"
                         + "Please drop a mail to ashik.ar.420@gmail.com");
